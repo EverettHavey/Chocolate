@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | ChocoFusion</title>
+    <style>
+        :root { --cocoa: #2d1b0e; --milk: #6d4c41; --cream: #fff8e1; --gold: #c5a059; --white: #ffffff; --dark-accent: #1a0f08; }
+        body { font-family: 'Georgia', serif; margin: 0; background: var(--cream); color: var(--cocoa); line-height: 1.6; }
+        
+        /* Unified Navigation */
+        nav { background: var(--cocoa); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .logo { font-size: 1.8rem; color: var(--gold); font-weight: bold; letter-spacing: 2px; text-decoration: none; text-transform: uppercase; }
+        .nav-links { display: flex; list-style: none; gap: 30px; margin: 0; align-items: center; }
+        .nav-links a { color: var(--white); text-decoration: none; font-size: 0.9rem; transition: 0.3s; font-weight: bold; text-transform: uppercase; }
+        .nav-links a:hover { color: var(--gold); }
+        
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+        .hamburger div { width: 25px; height: 3px; background: var(--white); border-radius: 2px; }
+
+        /* Contact Layout */
+        .contact-container { max-width: 1100px; margin: 60px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+        
+        .contact-info h1 { font-size: clamp(2rem, 5vw, 3rem); font-style: italic; margin-bottom: 20px; }
+        .contact-info p { font-size: 1.1rem; color: var(--milk); margin-bottom: 30px; }
+        
+        .info-details { margin-top: 40px; }
+        .info-item { margin-bottom: 25px; }
+        .info-item h4 { color: var(--gold); text-transform: uppercase; margin-bottom: 5px; letter-spacing: 1px; font-size: 0.85rem; }
+
+        /* Form Styling */
+        .contact-form { background: white; padding: 45px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .form-group { margin-bottom: 25px; }
+        label { display: block; font-weight: bold; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 10px; color: var(--cocoa); letter-spacing: 1px; }
+        input, select, textarea { width: 100%; padding: 14px; border: 1px solid #e0e0e0; border-radius: 4px; box-sizing: border-box; font-family: inherit; font-size: 1rem; background: #fafafa; }
+        input:focus, textarea:focus { outline: none; border-color: var(--gold); background: white; }
+        textarea { resize: vertical; min-height: 150px; }
+
+        .submit-btn { background: var(--cocoa); color: white; border: none; width: 100%; padding: 20px; border-radius: 4px; font-size: 0.9rem; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: 0.3s; letter-spacing: 2px; }
+        .submit-btn:hover { background: var(--gold); color: var(--cocoa); }
+
+        footer { background: var(--cocoa); color: var(--white); padding: 40px 10%; text-align: center; margin-top: 60px; }
+
+        @media (max-width: 850px) {
+            .contact-container { grid-template-columns: 1fr; gap: 40px; }
+            .hamburger { display: flex; }
+            .nav-links { display: none; position: absolute; top: 65px; left: 0; width: 100%; background: var(--cocoa); flex-direction: column; padding: 30px 0; text-align: center; }
+            .nav-links.active { display: flex; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">ChocoFusion</a>
+        <div class="hamburger" onclick="toggleMenu()"><div></div><div></div><div></div></div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Chocolates</a></li>
+            <li><a href="about.html">Our Story</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="contact-container">
+        <div class="contact-info">
+            <h1>Let’s Start a Conversation</h1>
+            <p>From custom gifting to wholesale partnerships, our artisans are ready to assist with your inquiry.</p>
+            
+            <div class="info-details">
+                <div class="info-item">
+                    <h4>The Production Studio</h4>
+                    <span>456 Artisan Way, Cocoa District<br>San Francisco, CA 94103</span>
+                </div>
+                <div class="info-item">
+                    <h4>Concierge Hours</h4>
+                    <span>Monday — Friday: 9:00 AM – 6:00 PM PST</span>
+                </div>
+                <div class="info-item">
+                    <h4>Direct Lines</h4>
+                    <span>General: hello@chocofusion.com<br>Wholesale: partners@chocofusion.com</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-form">
+            <form onsubmit="event.preventDefault(); alert('Inquiry submitted. Our concierge team will review your message.'); this.reset();">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="email@example.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="inquiry">Inquiry Type</label>
+                    <select id="inquiry">
+                        <option value="general">General Question</option>
+                        <option value="wholesale">Wholesale & Distribution</option>
+                        <option value="events">Corporate Gifting / Events</option>
+                        <option value="press">Press & Media</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" placeholder="Please provide details regarding your request..."></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">Submit Inquiry</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p style="opacity:0.6;">&copy; 2026 ChocoFusion Artisans. Crafted for the curious.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() { 
+            document.getElementById('navLinks').classList.toggle('active'); 
+        }
+    </script>
+</body>
+</html>

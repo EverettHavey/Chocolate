@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Bag | ChocoFusion</title>
+    <style>
+        :root { --cocoa: #2d1b0e; --milk: #6d4c41; --cream: #fff8e1; --gold: #c5a059; --white: #ffffff; --dark-accent: #1a0f08; }
+        body { font-family: 'Georgia', serif; margin: 0; background: var(--cream); color: var(--cocoa); line-height: 1.6; }
+        
+        /* Unified Navigation */
+        nav { background: var(--cocoa); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .logo { font-size: 1.8rem; color: var(--gold); font-weight: bold; letter-spacing: 2px; text-decoration: none; text-transform: uppercase; }
+        .nav-links { display: flex; list-style: none; gap: 30px; margin: 0; align-items: center; }
+        .nav-links a { color: var(--white); text-decoration: none; font-size: 0.9rem; transition: 0.3s; font-weight: bold; text-transform: uppercase; }
+        .nav-links a:hover { color: var(--gold); }
+        
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+        .hamburger div { width: 25px; height: 3px; background: var(--white); border-radius: 2px; }
+
+        /* Checkout Container */
+        .checkout-container { max-width: 900px; margin: 50px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 350px; gap: 40px; }
+        
+        .checkout-main, .order-summary { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); height: fit-content; }
+        
+        h2 { border-bottom: 2px solid var(--gold); padding-bottom: 10px; margin-top: 0; }
+        
+        /* Form Styling */
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 5px; color: var(--milk); }
+        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-family: inherit; }
+        .inline-fields { display: flex; gap: 15px; }
+
+        /* Order Items */
+        .cart-item { display: flex; justify-content: space-between; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f9f9f9; }
+        .cart-item span:last-child { font-weight: bold; }
+
+        /* Promo and Totals */
+        .promo-box { margin-top: 20px; padding-top: 20px; border-top: 2px dashed #eee; }
+        .promo-input-wrap { display: flex; gap: 10px; margin-top: 10px; }
+        .promo-btn { background: var(--cocoa); color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        
+        .totals-row { display: flex; justify-content: space-between; margin-top: 10px; }
+        .grand-total { font-size: 1.4rem; font-weight: bold; color: var(--cocoa); margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; }
+
+        .place-order-btn { background: var(--gold); color: var(--cocoa); border: none; width: 100%; padding: 20px; border-radius: 10px; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        .place-order-btn:hover { background: var(--cocoa); color: white; }
+
+        @media (max-width: 850px) {
+            .checkout-container { grid-template-columns: 1fr; }
+            .hamburger { display: flex; }
+            .nav-links { display: none; position: absolute; top: 65px; left: 0; width: 100%; background: var(--cocoa); flex-direction: column; padding: 30px 0; text-align: center; }
+            .nav-links.active { display: flex; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">ChocoFusion</a>
+        <div class="hamburger" onclick="toggleMenu()"><div></div><div></div><div></div></div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Chocolates</a></li>
+            <li><a href="about.html">Our Story</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="checkout-container">
+        <div class="checkout-main">
+            <h2>Shipping & Payment</h2>
+            <form id="paymentForm" onsubmit="handlePurchase(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <label>Shipping Address</label>
+                    <input type="text" placeholder="Address" required>
+                </div>
+                
+                <h3 style="margin-top: 40px;">Credit Card Information</h3>
+                <div class="form-group">
+                    <label>Card Number</label>
+                    <input type="text" placeholder="Card Number" maxlength="16" required>
+                </div>
+                <div class="inline-fields">
+                    <div class="form-group" style="flex: 2;">
+                        <label>Expiry Date</label>
+                        <input type="text" placeholder="MM/YY" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>CVV</label>
+                        <input type="text" placeholder="000" maxlength="3" required>
+                    </div>
+                </div>
+                <button type="submit" class="place-order-btn">Place Order Now</button>
+            </form>
+        </div>
+
+        <div class="order-summary">
+            <h3>Your Selection</h3>
+            <div id="cartList">
+                </div>
+
+            <div class="promo-box">
+                <label>Promo Code</label>
+                <div class="promo-input-wrap">
+                    <input type="text" id="promoInput" placeholder="Enter Code">
+                    <button class="promo-btn" onclick="applyDiscount()">Apply</button>
+                </div>
+            </div>
+
+            <div class="totals-row" style="margin-top: 20px;">
+                <span>Subtotal</span>
+                <span id="subtotal">$0.00</span>
+            </div>
+            <div class="totals-row" id="discountRow" style="display: none; color: #27ae60;">
+                <span>Discount</span>
+                <span id="discountAmt">-$0.00</span>
+            </div>
+            <div class="totals-row grand-total">
+                <span>Total</span>
+                <span id="finalTotal">$0.00</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let subtotal = 0;
+        let discountRate = 0;
+
+        function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
+
+        function renderCart() {
+            const cart = JSON.parse(localStorage.getItem('chocoCart')) || [];
+            const list = document.getElementById('cartList');
+            if (cart.length === 0) {
+                list.innerHTML = "<p>Your bag is empty.</p>";
+                return;
+            }
+
+            subtotal = 0;
+            list.innerHTML = cart.map(item => {
+                const price = item.price * item.qty;
+                subtotal += price;
+                return `<div class="cart-item">
+                            <span>${item.name} (x${item.qty})</span>
+                            <span>$${price.toFixed(2)}</span>
+                        </div>`;
+            }).join('');
+            
+            calculateTotals();
+        }
+
+        function applyDiscount() {
+            const code = document.getElementById('promoInput').value.toUpperCase();
+            if (code === "CHOCOFUSION") {
+                discountRate = 0.20;
+                alert("20% Discount Applied!");
+            } else if (code === "CHOCOBEAN") {
+                discountRate = 0.05;
+                alert("5% Discount Applied!");
+            } else {
+                discountRate = 0;
+                alert("Invalid code.");
+            }
+            calculateTotals();
+        }
+
+        function calculateTotals() {
+            const discAmt = subtotal * discountRate;
+            const final = subtotal - discAmt;
+
+            document.getElementById('subtotal').innerText = `$${subtotal.toFixed(2)}`;
+            document.getElementById('finalTotal').innerText = `$${final.toFixed(2)}`;
+
+            if (discAmt > 0) {
+                document.getElementById('discountRow').style.display = 'flex';
+                document.getElementById('discountAmt').innerText = `-$${discAmt.toFixed(2)}`;
+            } else {
+                document.getElementById('discountRow').style.display = 'none';
+            }
+        }
+
+        function handlePurchase(e) {
+            e.preventDefault();
+            alert("Thank you! Your artisan chocolates are being prepared for shipment.");
+            localStorage.removeItem('chocoCart');
+            window.location.href = "index.html";
+        }
+
+        renderCart();
+    </script>
+</body>
+</html>
